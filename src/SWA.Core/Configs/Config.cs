@@ -67,7 +67,7 @@ namespace SWA.Core.Configs
                         string parameter = args[0];
                         if (parameter.Equals(key))
                         {
-                            return (Object)args[1];
+                            return (Object)args[1].Trim();
                         }
                     }
                 }

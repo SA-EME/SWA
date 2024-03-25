@@ -12,10 +12,10 @@ namespace SWA.Core.Logs
             get { return 1; }
         }
 
-        public string LogName { get; set; }
+        public string Name { get; set; }
         public string Hostname { get; set; }
         public string Appname { get; set; }
-        public string Name { get; set; }
+
         public LogSeverity Severity { get; set; }
         public string Source { get; set; }
         public int EventID { get; set; }
@@ -23,9 +23,9 @@ namespace SWA.Core.Logs
 
         public DateTimeOffset TimeGenerated { get; set; }
 
-        public Log(string LogName, string Hostname, string Appname, LogSeverity Severity, int EventID, string Message, DateTimeOffset TimeGenerated)
+        public Log(string Name, string Hostname, string Appname, LogSeverity Severity, int EventID, string Message, DateTimeOffset TimeGenerated)
         {
-            this.LogName = LogName;
+            this.Name = Name;
             this.Hostname = Hostname;
             this.Appname = Appname;
             this.Severity = Severity;
@@ -33,6 +33,7 @@ namespace SWA.Core.Logs
             this.Message = Message;
             this.TimeGenerated = TimeGenerated;
         }
+
 
         private byte[] ToFormatRSyslog()
         {
@@ -52,7 +53,7 @@ namespace SWA.Core.Logs
             UdpClient udpClient = new UdpClient(11000);
             try
             {
-                udpClient.Connect(SWAService.SERVER_IP, 514);
+                udpClient.Connect("127.0.0.1", 514);
                 udpClient.DontFragment = false;
 
 
@@ -64,6 +65,12 @@ namespace SWA.Core.Logs
             {
                 udpClient.Close();
             }
+        }
+
+       
+        public override String ToString()
+        {
+            return $"{TimeGenerated} {Hostname} {Appname} {Severity} {EventID} {Message}";
         }
 
     }

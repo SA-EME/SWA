@@ -19,49 +19,46 @@ namespace SWA.Core.Configs
             Import();
         }
 
-        public void Import()
+        private void Import()
         {
-            /*
-             * Need to import every configuration file from the path and load it into memory
-             */
 
             try
             {
-                // Vérifie si le dossier existe
                 if (Directory.Exists(Path))
                 {
-                    // Obtient tous les fichiers
                     string[] files = Directory.GetFiles(Path);
 
-                    // Affiche le chemin de chaque fichier
                     foreach (string file in files)
                     {
+                        string name = file.Substring(file.LastIndexOf("\\") + 1);
                         Config SWRConfig = new Config(file);
                         string log = (string) SWRConfig.Get("filter", "log");
                         string source = (string) SWRConfig.Get("filter", "source");
-                        int event_id = (int) SWRConfig.Get("filter", "event_id");
-                        string contains = (string) SWRConfig.Get("filter", "contains");
+                        int event_id = Int16.Parse((string) SWRConfig.Get("filter", "event_id"));
+                        SWALog.Write("DEBUG", $"Source: {source}  EventID: {event_id}");
+                        /*string contains = (string) SWRConfig.Get("filter", "contains");*/
 
-                        RuleFilter filter = new RuleFilter(log, source, event_id, contains);
+                        RuleFilter filter = new RuleFilter(log, source, event_id, null, null);
 
                         List<String> process = SWRConfig.GetSection("process");
 
+
+
                         List<String> transform = SWRConfig.GetSection("transform");
 
-                        new LogListener(log, new Rules.Rule(filter, null, null));
+                        new LogListener(log, new Rules.Rule(name, filter, null, null));
+                        SWALog.Write("INFO", $"Importation du fichier {file}");
 
                     }
                 }
                 else
                 {
-                    // Shutdown the application & log the error
-                    Console.WriteLine($"Le dossier {Path} n'existe pas.");
+                    SWALog.Write("ERR", $"Le dossier {Path} n'existe pas.");
                 }
             }
             catch (Exception ex)
             {
-                // Shutdown the application & log the error
-                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
+                SWALog.Write("ERR", $"Une erreur s'est produite : {ex.Message}");
             }
 
         }

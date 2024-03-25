@@ -1,22 +1,57 @@
 ﻿using System;
-using System.Diagnostics;
-using SWA.Core.Logs;
-using SWA.Core.Rules;
+using System.IO;
+using System.Reflection;
+using SWA.Core.Configs;
 
 namespace SWA.Core
 {
-    public class SWALog
+    public static class SWALog
     {
 
-        private readonly EventLog log;
+        public static readonly string WorkingPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        public static readonly string TemplatePath = Path.Combine(WorkingPath, "Templates");
 
-        public SWALog() {
+        public static readonly string Mode = "INFO";
+
+        public static void Start() {
+            ConfigSWR config = new ConfigSWR(TemplatePath);
+            Write("INFO", "Initialisation du service SWA");
         }
 
-        public void Initialize()
+
+        public static void Write(String type, String msg)
         {
-            log.EntryWritten += new EntryWrittenEventHandler(Event_NewLogWritten);
-            log.EnableRaisingEvents = true;
+            if (Mode != "DEBUG" && type == "DEBUG")
+            {
+                return;
+            }
+
+            string fileName = "log.txt";
+            string fullPath = Path.Combine(WorkingPath, fileName);
+
+            string[] data = new string[3000];
+            data[0] = "[" + type + "] " + msg;
+            try
+            {
+                using (StreamReader sr = File.OpenText(fullPath))
+                {
+                    string s = "";
+                    int i = 1;
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        data[i] = s;
+                        i++;
+                    }
+                    sr.Close();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+            File.WriteAllLines(fullPath, data);
         }
 
     }

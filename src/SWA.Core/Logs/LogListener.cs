@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Xml.Linq;
 using SWA.Core.Rules;
 
 namespace SWA.Core.Logs
@@ -21,6 +22,7 @@ namespace SWA.Core.Logs
             if (List.Contains(this))
             {
                 List.Find(x => x.LogName == logname).Rules.Add(rule);
+                SWALog.Write("INFO", "Ajout de la règle " + rule.Name + " à l'écouteur " + logname);
             }
             else
             {
@@ -28,6 +30,8 @@ namespace SWA.Core.Logs
                 ELog = new EventLog(logname);
                 ELog.EntryWritten += new EntryWrittenEventHandler(Event_NewLogWritten);
                 ELog.EnableRaisingEvents = true;
+                Rules.Add(rule);
+                SWALog.Write("INFO", "Ajout de la règle " + rule.Name + " à l'écouteur " + logname);
                 List.Add(this);
             }
         }
@@ -36,28 +40,29 @@ namespace SWA.Core.Logs
         {
             String Message = e.Entry.Message.Replace("\r\n", " ").Replace("\t", "");
 
-            Log NewLog = new Log()
-            {
-                LogName = LogName,
-                Hostname = Environment.MachineName,
-                Appname = e.Entry.Source,
-                Severity = (LogSeverity)e.Entry.EntryType,
-                EventID = (int)e.Entry.InstanceId,
-                Message = Message,
-                TimeGenerated = e.Entry.TimeGenerated
-            };
+            Log NewLog = new Log(LogName, Environment.MachineName, e.Entry.Source, (LogSeverity)e.Entry.EntryType, (int)e.Entry.InstanceId, Message, e.Entry.TimeGenerated);
 
-            Rules.ForEach(rule =>
+            bool finded = false;
+
+            foreach(Rule rule in Rules)
             {
                 if (rule.Filter.Check(NewLog))
                 {
-
-                    rule.Processing.ToString();
-                    rule.Transform.ToString();
-
-                    NewLog.Send();
+                    //rule.Processing.ToString();
+                    //rule.Transform.ToString();
+                    //NewLog.Send();
+                    finded = true;
+                    break;
                 }
-            });
+            }
+
+            if (!finded)
+            {
+                SWALog.Write("DEBUG", "Aucune règle n'a été trouvée pour le message : " + NewLog.ToString());
+            } else
+            {
+                SWALog.Write("INFO", NewLog.ToString());
+            }
 
         }
 

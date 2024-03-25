@@ -8,6 +8,7 @@ namespace SWA.Core
         public SWAService()
         {
             InitializeComponent();
+
         }
 
         protected override void OnStart(string[] args)
@@ -19,6 +20,8 @@ namespace SWA.Core
             };
             timer.Elapsed += new ElapsedEventHandler(TimerElapsed);
             timer.Start();
+
+            SWALog.Start();
         }
     
         /**
