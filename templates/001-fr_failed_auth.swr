@@ -1,0 +1,19 @@
+Description: "Send log when user auth failed"
+Filter:
+    Log: Security
+    Source: Microsoft-Windows-Security-Auditing
+    EventID: 4625
+Process:
+  - Name: ExtractHostVariable
+    Function: ExtractVariableByLine
+    Arguments:
+        - "$Message"
+        - "12"
+  - Name: ExtractComputerVariable
+    Function: ExtractVariableByLine
+    Arguments:
+        - "$Message"
+        - "25"
+Transform:
+  Severity: Warning
+  Message: "Mot de passe incorrect pour $ExtractHostVariable sur $ExtractComputerVariable"
