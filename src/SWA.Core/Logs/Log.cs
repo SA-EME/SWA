@@ -4,6 +4,7 @@ using System.Net.Sockets;
 
 namespace SWA.Core.Logs
 {
+
     public class Log
     {
 
@@ -74,6 +75,5 @@ namespace SWA.Core.Logs
         }
 
     }
-
 
 }

@@ -11,7 +11,7 @@ namespace SWA.Core
         public static readonly string WorkingPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public static readonly string TemplatePath = Path.Combine(WorkingPath, "Templates");
 
-        public static readonly string Mode = "INFO";
+        public static readonly string Mode = "DEBUG";
 
         public static void Start() {
             ConfigSWR config = new ConfigSWR(TemplatePath);

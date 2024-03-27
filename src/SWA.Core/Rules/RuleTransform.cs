@@ -1,5 +1,5 @@
 ﻿
-namespace SWA.Core.Rules.Actions
+namespace SWA.Core.Rules
 {
 
     public class RuleTransform

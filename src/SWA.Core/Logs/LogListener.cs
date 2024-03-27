@@ -17,21 +17,21 @@ namespace SWA.Core.Logs
 
 
 
-        public LogListener(string logname, Rule rule)
+        public LogListener(Rule rule)
         {
             if (List.Contains(this))
             {
-                List.Find(x => x.LogName == logname).Rules.Add(rule);
-                SWALog.Write("INFO", "Ajout de la règle " + rule.Name + " à l'écouteur " + logname);
+                List.Find(x => x.LogName == rule.Filter.Log).Rules.Add(rule);
+                SWALog.Write("INFO", "Ajout de la règle " + rule.Name + " à l'écouteur " + rule.Filter.Log);
             }
             else
             {
-                LogName = logname;
-                ELog = new EventLog(logname);
+                LogName = rule.Filter.Log;
+                ELog = new EventLog(rule.Filter.Log);
                 ELog.EntryWritten += new EntryWrittenEventHandler(Event_NewLogWritten);
                 ELog.EnableRaisingEvents = true;
                 Rules.Add(rule);
-                SWALog.Write("INFO", "Ajout de la règle " + rule.Name + " à l'écouteur " + logname);
+                SWALog.Write("INFO", "Ajout de la règle " + rule.Name + " à l'écouteur " + rule.Filter.Log);
                 List.Add(this);
             }
         }
@@ -48,7 +48,11 @@ namespace SWA.Core.Logs
             {
                 if (rule.Filter.Check(NewLog))
                 {
-                    //rule.Processing.ToString();
+                     SWALog.Write("INFO", NewLog.ToString());
+                    foreach(RuleProcess process in rule.Process)
+                    {
+                        process.Execute(NewLog);
+                    }
                     //rule.Transform.ToString();
                     //NewLog.Send();
                     finded = true;

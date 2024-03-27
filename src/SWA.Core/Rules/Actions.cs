@@ -1,9 +1,9 @@
 ﻿
 using System.Text.RegularExpressions;
 
-namespace SWA.Core.Rules.Actions
+namespace SWA.Core.Rules
 {
-    public abstract class ExtractVariable
+    public abstract class Actions
     {
 
         public static string ExtractVariableByRegex(string message, string pattern)

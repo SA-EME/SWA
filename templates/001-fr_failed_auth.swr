@@ -1,0 +1,13 @@
+Description: "Send log when user auth failed"
+Filter:
+    Log: Security
+    Source: Microsoft-Windows-Security-Auditing
+    EventID: 4625
+Process:
+  - Name: ExtractHostVariable
+    Function: ExtractVariableByRegex
+    Arguments:
+        - "$Message"
+        - '@"Nom du compte :(\w+)"'
+Transform:
+# some transform

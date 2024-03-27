@@ -11,21 +11,11 @@ namespace SWA.Core.Rules
         public LogSeverity? Severity { get; set; }
         public string Contains { get; set; }
 
-        public RuleFilter(string Log, string Source)
+        public RuleFilter()
         {
-            this.Log = Log;
-            this.Source = Source;
-        }
-
-        public RuleFilter(string Log, string Source, int EventID, LogSeverity? severity, string Contains)
-        {
-            this.Log = Log;
-            this.Source = Source;
-            this.EventID = EventID;
-            this.Severity = severity;
-            this.Contains = Contains;
 
         }
+
 
         public bool Check(Log log)
         {
@@ -42,8 +32,10 @@ namespace SWA.Core.Rules
                         {
                             SWALog.Write("DEBUG", $"Contains: {this.Contains} - {log.Message}");
                             if (this.Contains == null || log.Message.Contains(this.Contains))
+                            {
                                 SWALog.Write("DEBUG", "Pass contains check");
-                            return true;
+                                return true;
+                            }
                         }
                     }
                 }
