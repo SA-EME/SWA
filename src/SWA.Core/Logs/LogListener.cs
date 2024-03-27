@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Xml.Linq;
 using SWA.Core.Rules;
 
 namespace SWA.Core.Logs
@@ -38,23 +37,25 @@ namespace SWA.Core.Logs
 
         private void Event_NewLogWritten(object source, EntryWrittenEventArgs e)
         {
-            String Message = e.Entry.Message.Replace("\r\n", " ").Replace("\t", "");
 
-            Log NewLog = new Log(LogName, Environment.MachineName, e.Entry.Source, (LogSeverity)e.Entry.EntryType, (int)e.Entry.InstanceId, Message, e.Entry.TimeGenerated);
+            Log NewLog = new Log(LogName, Environment.MachineName, e.Entry.Source, (LogSeverity)e.Entry.EntryType, (int)e.Entry.InstanceId, e.Entry.Message, e.Entry.TimeGenerated);
 
             bool finded = false;
 
-            foreach(Rule rule in Rules)
+            foreach (Rule rule in Rules)
             {
                 if (rule.Filter.Check(NewLog))
                 {
-                     SWALog.Write("INFO", NewLog.ToString());
-                    foreach(RuleProcess process in rule.Process)
+                    var processDict = new Dictionary<string, RuleProcess>();
+                    foreach (RuleProcess process in rule.Process)
                     {
                         process.Execute(NewLog);
+                        processDict[process.Name] = process;
                     }
-                    //rule.Transform.ToString();
-                    //NewLog.Send();
+                    rule.Transform.Apply(NewLog, processDict);
+
+                    NewLog.Message = NewLog.Message.Replace("\r\n", " ").Replace("\t", " ");
+                    NewLog.Send();
                     finded = true;
                     break;
                 }
@@ -63,7 +64,8 @@ namespace SWA.Core.Logs
             if (!finded)
             {
                 SWALog.Write("DEBUG", "Aucune règle n'a été trouvée pour le message : " + NewLog.ToString());
-            } else
+            }
+            else
             {
                 SWALog.Write("INFO", NewLog.ToString());
             }

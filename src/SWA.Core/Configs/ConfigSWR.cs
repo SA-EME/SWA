@@ -1,10 +1,8 @@
-﻿
-
+﻿using System;
 using System.IO;
-using YamlDotNet.Serialization;
-using System;
 using SWA.Core.Logs;
 using SWA.Core.Rules;
+using YamlDotNet.Serialization;
 
 namespace SWA.Core.Configs
 {
@@ -32,8 +30,6 @@ namespace SWA.Core.Configs
                     {
                         string name = file.Substring(file.LastIndexOf("\\") + 1);
 
-
-                        //Config SWRConfig = new Config(file);
                         try
                         {
                             var deserializer = new DeserializerBuilder().Build();

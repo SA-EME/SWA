@@ -5,9 +5,15 @@ Filter:
     EventID: 4625
 Process:
   - Name: ExtractHostVariable
-    Function: ExtractVariableByRegex
+    Function: ExtractVariableByLine
     Arguments:
         - "$Message"
-        - '@"Nom du compte :(\w+)"'
+        - "12"
+  - Name: ExtractComputerVariable
+    Function: ExtractVariableByLine
+    Arguments:
+        - "$Message"
+        - "25"
 Transform:
-# some transform
+  Severity: Warning
+  Message: "Mot de passe incorrect pour $ExtractHostVariable sur $ExtractComputerVariable"

@@ -34,7 +34,8 @@ namespace SWA.Core.Rules
                         }
                     }
                 }
-            } catch (DataException e)
+            }
+            catch (DataException e)
             {
                 SWALog.Write("ERROR", $"Error while replace logs args in process {Name}: {e.Message}");
             }

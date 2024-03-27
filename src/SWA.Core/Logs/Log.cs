@@ -68,7 +68,7 @@ namespace SWA.Core.Logs
             }
         }
 
-       
+
         public override String ToString()
         {
             return $"{TimeGenerated} {Hostname} {Appname} {Severity} {EventID} {Message}";
