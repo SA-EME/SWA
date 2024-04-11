@@ -19,7 +19,14 @@ namespace SWA.Core.Rules
         {
             if (!string.IsNullOrEmpty(Severity))
             {
-                log.Severity = (LogSeverity)Enum.Parse(typeof(LogSeverity), Severity);
+                try
+                {
+                    log.Severity = (LogSeverity)Enum.Parse(typeof(LogSeverity), Severity);
+                } catch (Exception e)
+                {
+                    SWALog.Write("ERROR", $"Error while apply severity in transform: {e.Message}");
+                }
+                
             }
 
             if (!string.IsNullOrEmpty(Message))

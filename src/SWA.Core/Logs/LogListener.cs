@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using SWA.Core.Rules;
 
 namespace SWA.Core.Logs
 {
     public class LogListener
     {
+        private static readonly LinkedList<Log> LastedLogsSended = new LinkedList<Log>();
+
         private readonly EventLog ELog;
         public string LogName { get; set; }
 
@@ -39,7 +42,18 @@ namespace SWA.Core.Logs
         {
 
             Log NewLog = new Log(LogName, Environment.MachineName, e.Entry.Source, (LogSeverity)e.Entry.EntryType, (int)e.Entry.InstanceId, e.Entry.Message, e.Entry.TimeGenerated);
+            if (LastedLogsSended.Count != 0 && LastedLogsSended.Last() == NewLog)
+            {
+                SWALog.Write("INFO", "Le message a déjà été traitée");
+                return;
+            }
 
+            if (LastedLogsSended.Count >= 10) // TODO Change by config variable
+            {
+                LastedLogsSended.RemoveFirst();
+            }
+
+            LastedLogsSended.AddLast(NewLog);
             bool finded = false;
 
             foreach (Rule rule in Rules)
@@ -54,7 +68,8 @@ namespace SWA.Core.Logs
                     }
                     rule.Transform.Apply(NewLog, processDict);
 
-                    NewLog.Message = NewLog.Message.Replace("\r\n", " ").Replace("\t", " ");
+
+                    NewLog.Format();
                     NewLog.Send();
                     finded = true;
                     break;

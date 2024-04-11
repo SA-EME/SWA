@@ -39,14 +39,20 @@ namespace SWA.Core.Logs
         private byte[] ToFormatRSyslog()
         {
             StringBuilder fl = new StringBuilder();
-            fl.Append("<").Append("6").Append(">");
+            fl.Append("<").Append((int)this.Severity).Append(">");
             fl.Append(Version);
             fl.Append(" ").Append(TimeGenerated.ToString("o"));
             fl.Append(" ").Append(Hostname);
             fl.Append(" ").Append(Appname);
             fl.Append(" - - - ").Append(Message);
 
-            return Encoding.ASCII.GetBytes(fl.ToString());
+            return Encoding.UTF8.GetBytes(fl.ToString());
+        }
+
+        public void Format()
+        {
+            this.Message = this.Message.Replace("\t", " ");
+            this.Message = this.Message.Replace("\r", " ");
         }
 
         public void Send()
