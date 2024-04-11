@@ -2,13 +2,14 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+
 // Les informations générales relatives à un assembly dépendent de
 // l'ensemble d'attributs suivant. Pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("SWA.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Windows service which send the windows event log to a syslog server")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("SAEME")]
 [assembly: AssemblyProduct("SWA.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
@@ -31,6 +32,7 @@ using System.Runtime.InteropServices;
 //
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut
 // en utilisant '*', comme indiqué ci-dessous :
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// [assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.1.0.*")]
+[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyInformationalVersion("0.1.0.*")]
