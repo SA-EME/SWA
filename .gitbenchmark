@@ -1,0 +1,51 @@
+[type.release]
+version = "major"
+
+[type.breaking]
+version = "major"
+
+[type.feat]
+version = "minor"
+
+[type.chore]
+version = "patch"
+
+[type.fix]
+version = "patch"
+
+[type.ci]
+version = "patch"
+
+[type.docs]
+version = "patch"
+
+[type.perf]
+version = "patch"
+
+[type.refactor]
+version = "patch"
+
+[type.style]
+version = "patch"
+
+[type.test]
+version = "patch"
+
+[scope.project.files.Main]
+
+[scope.core.files.AV]
+path = "src/SWA.Core/Properties/AssemblyInfo.cs"
+pattern = '(AssemblyVersion\(")([0-9\.]+)'
+
+[scope.core.files.AFV]
+path = "src/SWA.Core/Properties/AssemblyInfo.cs"
+pattern = '(AssemblyFileVersion\(")([0-9\.]+)'
+
+[scope.core.files.AIV]
+path = "src/SWA.Core/Properties/AssemblyInfo.cs"
+pattern = '(AssemblyInformationalVersion\(")([0-9\.]+)'
+
+[scope.core.files.readme]
+path = "readme.md"
+pattern = "(SWA.Core-)([^-%]*)"
+

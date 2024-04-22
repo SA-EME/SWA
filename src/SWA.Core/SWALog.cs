@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using SWA.Core.Configs;
@@ -8,15 +9,21 @@ namespace SWA.Core
     public static class SWALog
     {
 
+
+
         public static readonly string WorkingPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public static readonly string TemplatePath = Path.Combine(WorkingPath, "Templates");
 
-        public static readonly string Mode = "INFO";
+        
+        private static readonly FileVersionInfo FVI = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+        private static readonly string Version = FVI.FileVersion;
+
+        public static readonly string Mode = "DEBUG";
 
         public static void Start()
         {
             new ConfigSWR(TemplatePath);
-            Write("INFO", "Initialisation du service SWA");
+            Write("INFO", "Initialisation du service SWA " + Version);
         }
 
 

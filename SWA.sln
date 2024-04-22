@@ -7,9 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9530BF30-5FC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWA.Core", "src\SWA.Core\SWA.Core.csproj", "{3AF42E1E-B186-4431-9434-73465C4861A5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{67AD505B-A2B8-481E-9ABA-E553A57DB70F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Éléments de solution", "{67AD505B-A2B8-481E-9ABA-E553A57DB70F}"
 	ProjectSection(SolutionItems) = preProject
-		GitVersion.yml = GitVersion.yml
+		.gitbenchmark = .gitbenchmark
+		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
