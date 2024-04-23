@@ -11,6 +11,7 @@ namespace SWA.Core.Rules
         public string Name { get; set; }
         public string Function { get; set; }
         public List<string> Arguments { get; set; }
+        public List<string> CurrentArguments { get; set; }
         public string Output { get; set; }
 
         public RuleProcess()
@@ -20,6 +21,7 @@ namespace SWA.Core.Rules
 
         private void ReplaceLogsArgs(Log log)
         {
+            CurrentArguments = new List<string>(Arguments);
             try
             {
                 for (int i = 0; i < Arguments.Count; i++)
@@ -30,7 +32,7 @@ namespace SWA.Core.Rules
                         PropertyInfo property = typeof(Log).GetProperty(propertyName);
                         if (property != null)
                         {
-                            Arguments[i] = (string)property.GetValue(log);
+                            CurrentArguments[i] = (string)property.GetValue(log);
                         }
                     }
                 }
@@ -46,7 +48,7 @@ namespace SWA.Core.Rules
             ReplaceLogsArgs(log);
             try
             {
-                var result = typeof(Actions).GetMethod(Function).Invoke(null, Arguments.ToArray());
+                var result = typeof(Actions).GetMethod(Function).Invoke(null, CurrentArguments.ToArray());
                 Output = (string)result;
                 SWALog.Write("DEBUG", $"Process {Name} executed with success, output : {Output}");
             }
@@ -55,6 +57,7 @@ namespace SWA.Core.Rules
                 SWALog.Write("ERROR", $"Error while execute process {Name}: {e.Message}");
                 Output = "N/A";
             }
+
         }
 
     }
