@@ -1,7 +1,7 @@
 <h1 align=center>Syslog Windows Agent</h1>
 
 <p align=center>
-  <a href="https://github.com/SA-EME/GitBenchmark"><img src="https://img.shields.io/badge/SWA.Core-0.1.0-%23f7df1e?style=for-the-badge" alt="SWA"/></a>
+  <a href="https://github.com/SA-EME/GitBenchmark"><img src="https://img.shields.io/badge/SWA.Core-0.1.1-%23f7df1e?style=for-the-badge" alt="SWA"/></a>
   <img src="https://img.shields.io/badge/LANGUAGE-CSHARP-ad2828?style=for-the-badge" alt="CSHARP"/>
 </p>
 

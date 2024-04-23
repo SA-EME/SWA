@@ -46,6 +46,6 @@ path = "src/SWA.Core/Properties/AssemblyInfo.cs"
 pattern = '(AssemblyInformationalVersion\(")([0-9\.]+)'
 
 [scope.core.files.readme]
-path = "readme.md"
+path = "README.md"
 pattern = "(SWA.Core-)([^-%]*)"
 
