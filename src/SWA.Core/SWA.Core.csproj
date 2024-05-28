@@ -113,7 +113,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>cd $(SolutionDir)
+gitbenchmark build core
+cd $(TargetDir)</PreBuildEvent>
   </PropertyGroup>
 </Project>
