@@ -10,15 +10,15 @@ namespace SWA.Core
     {
 
 
-
         public static readonly string WorkingPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        public static readonly Config SWAConfig = Config.getConfig();
+
+
         public static readonly string TemplatePath = Path.Combine(WorkingPath, "Templates");
 
         
         private static readonly FileVersionInfo FVI = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
         private static readonly string Version = FVI.FileVersion;
-
-        public static readonly string Mode = "DEBUG";
 
         public static void Start()
         {
@@ -29,7 +29,12 @@ namespace SWA.Core
 
         public static void Write(String type, String msg)
         {
-            if (Mode != "DEBUG" && type == "DEBUG")
+            if (SWAConfig.EnableLog == false)
+            {
+                return;
+            }
+
+            if (SWAConfig.Mode != "DEBUG" && type == "DEBUG")
             {
                 return;
             }
@@ -57,8 +62,6 @@ namespace SWA.Core
             {
 
             }
-
-
             File.WriteAllLines(fullPath, data);
         }
 

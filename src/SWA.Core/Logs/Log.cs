@@ -60,7 +60,7 @@ namespace SWA.Core.Logs
             UdpClient udpClient = new UdpClient(11000);
             try
             {
-                udpClient.Connect("127.0.0.1", 514);
+                udpClient.Connect(SWALog.SWAConfig.Server, 514);
                 udpClient.DontFragment = false;
 
 
