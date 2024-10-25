@@ -41,10 +41,13 @@ namespace SWA.Core.Logs
             StringBuilder fl = new StringBuilder();
             fl.Append("<").Append((int)this.Severity).Append(">");
             fl.Append(Version);
-            fl.Append(" ").Append(TimeGenerated.ToString("o"));
+            fl.Append(" ").Append(TimeGenerated.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"));
+            // fl.Append(" ").Append(TimeGenerated.ToString("o")); OLD FORMAT
             fl.Append(" ").Append(Hostname);
             fl.Append(" ").Append(Appname);
             fl.Append(" - - - ").Append(Message);
+
+            SWALog.Write("DEBUG", "Log formatted to RSyslog before encoding : " + fl.ToString());
 
             return Encoding.UTF8.GetBytes(fl.ToString());
         }
@@ -65,11 +68,14 @@ namespace SWA.Core.Logs
 
 
                 Byte[] sendBytes = this.ToFormatRSyslog();
+
                 udpClient.Send(sendBytes, sendBytes.Length);
                 udpClient.Close();
+                SWALog.Write("DEBUG", "Log sent to the serveur : " + SWALog.SWAConfig.Server);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                SWALog.Write("ERROR", "Error, can't send log to the serveur" + ex.StackTrace);
                 udpClient.Close();
             }
         }

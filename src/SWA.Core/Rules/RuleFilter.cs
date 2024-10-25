@@ -19,18 +19,19 @@ namespace SWA.Core.Rules
 
         public bool Check(Log log)
         {
+            SWALog.Write("DEBUG", $"Checking log: {log.Name}, {log.Appname}, {log.EventID}, {log.Severity}, {log.Message}");
             if (this.Log == log.Name)
             {
-                SWALog.Write("DEBUG", $"Log: {this.Source} - {log.Appname}");
-                if (this.Source == log.Appname)
+                SWALog.Write("DEBUG", $"Log match: {this.Log}");
+                if (this.Source == log.Appname || this.Source == null)
                 {
-                    SWALog.Write("DEBUG", $"EventID: {this.EventID} - {log.EventID}");
+                    SWALog.Write("DEBUG", $"Source match: {this.Source}");
                     if (this.EventID == log.EventID || this.EventID == 0)
                     {
-                        SWALog.Write("DEBUG", $"Sev: {this.Severity} - {log.Severity}");
+                        SWALog.Write("DEBUG", $"EventID match: {this.EventID}");
                         if (this.Severity == log.Severity || this.Severity == null)
                         {
-                            SWALog.Write("DEBUG", $"Contains: {this.Contains} - {log.Message}");
+                            SWALog.Write("DEBUG", $"Severity match: {this.Severity}");
                             if (this.Contains == null || log.Message.Contains(this.Contains))
                             {
                                 SWALog.Write("DEBUG", "Pass contains check");

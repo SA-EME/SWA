@@ -8,32 +8,13 @@ namespace SWA.Core
         public SWAService()
         {
             InitializeComponent();
-
+            this.ServiceName = "SWAService";
         }
 
         protected override void OnStart(string[] args)
         {
-            Timer timer = new Timer
-            {
-                Interval = 1000 * 10,
-                AutoReset = false
-            };
-            timer.Elapsed += new ElapsedEventHandler(TimerElapsed);
-            timer.Start();
 
             SWALog.Start();
-        }
-    
-        /**
-         * Check every 10 seconds something
-         */
-        static void TimerElapsed(object sender, ElapsedEventArgs e)
-        {
-
-        }
-
-        protected override void OnStop()
-        {
         }
     }
 }

@@ -10,6 +10,7 @@ namespace SWA.Core.Rules
 
         public string Severity { get; set; }
         public string Message { get; set; }
+        public string Source { get; set; }
 
         public RuleTransform() { }
 
@@ -31,12 +32,18 @@ namespace SWA.Core.Rules
 
             if (!string.IsNullOrEmpty(Message))
             {
+                string CustomMessage = Message;
+
                 foreach (var process in processes)
                 {
-                    Message = Message.Replace($"${process.Key}", process.Value.Output);
+                    CustomMessage = CustomMessage.Replace($"${process.Key}", process.Value.Output);
                 }
 
-                log.Message = Message;
+                log.Message = CustomMessage;
+            }
+            if(!string.IsNullOrEmpty(Source))
+            {
+                log.Appname = Source;
             }
         }
     }

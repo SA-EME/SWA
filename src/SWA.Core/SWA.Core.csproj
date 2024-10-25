@@ -117,8 +117,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>cd $(SolutionDir)
-gitbenchmark build core
-cd $(TargetDir)</PreBuildEvent>
+    <PreBuildEvent>if $(ConfigurationName) == Debug (
+  cd $(SolutionDir)
+  gitbenchmark build core
+  cd $(TargetDir)
+)</PreBuildEvent>
   </PropertyGroup>
 </Project>

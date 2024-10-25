@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using SWA.Core.Configs;
+using SWA.Core.Logs;
 
 namespace SWA.Core
 {
@@ -27,14 +29,14 @@ namespace SWA.Core
         }
 
 
-        public static void Write(String type, String msg)
+        public static void Write(string type, string msg)
         {
-            if (SWAConfig.EnableLog == false)
+            if (!SWAConfig.EnableLog)
             {
                 return;
             }
 
-            if (SWAConfig.Mode != "DEBUG" && type == "DEBUG")
+            if (SWAConfig.Mode.ToUpper() != "DEBUG" && type.ToUpper() == "DEBUG")
             {
                 return;
             }
@@ -42,27 +44,29 @@ namespace SWA.Core
             string fileName = "log.txt";
             string fullPath = Path.Combine(WorkingPath, fileName);
 
-            string[] data = new string[3000];
-            data[0] = "[" + type + "] " + msg;
+            List<string> data = new List<string>();
+            data.Add($"[{type}] {msg}");
+
             try
             {
-                using (StreamReader sr = File.OpenText(fullPath))
+                lock (LogListener.lockObject)
                 {
-                    string s = "";
-                    int i = 1;
-                    while ((s = sr.ReadLine()) != null)
+                    if (File.Exists(fullPath))
                     {
-                        data[i] = s;
-                        i++;
+                        data.AddRange(File.ReadAllLines(fullPath));
                     }
-                    sr.Close();
+
+                    File.WriteAllLines(fullPath, data);
                 }
             }
-            catch (Exception)
+            catch (IOException ex)
             {
-
+                Console.WriteLine($"Erreur d'écriture dans le fichier de log : {ex.Message}");
             }
-            File.WriteAllLines(fullPath, data);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur inattendue : {ex.Message}");
+            }
         }
 
     }
